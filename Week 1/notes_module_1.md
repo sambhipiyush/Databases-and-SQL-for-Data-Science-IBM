@@ -146,7 +146,7 @@ by IBM
 
 ### CREATE Table Statement
 
-* Lecture course_overview
+* Lecture overview
 				<p align="center">
 				  <a href="javascript:void(0)" rel="noopener">
 					 <img width=600px  src="notesImages/create_table_overview_image7.png" alt="create_table_overview_image7"></a>
@@ -192,7 +192,7 @@ by IBM
 
 ### SELECT Statement
 
-* Lecture course_overview
+* Lecture overview
 				<p align="center">
 				  <a href="javascript:void(0)" rel="noopener">
 					 <img width=600px  src="notesImages/select_overview_image9.png" alt="select_overview_image9"></a>
@@ -308,7 +308,7 @@ by IBM
 
 ### INSERT Statement
 
-* Lecture course_overview
+* Lecture overview
 				<p align="center">
 				  <a href="javascript:void(0)" rel="noopener">
 					 <img width=600px  src="notesImages/insert_overview_image18.png" alt="insert_overview_image18"></a>
@@ -355,7 +355,7 @@ by IBM
 
 ### UPDATE and DELETE Statements
 
-* Lecture course_overview
+* Lecture overview
 				<p align="center">
 				  <a href="javascript:void(0)" rel="noopener">
 					 <img width=600px  src="notesImages/update_delete_overview_image22.png" alt="update_delete_overview_image22"></a>
@@ -418,7 +418,7 @@ by IBM
 
 ### Information and Data Models
 
-* Lecture course_overview
+* Lecture overview
 				<p align="center">
 				  <a href="javascript:void(0)" rel="noopener">
 					 <img width=600px  src="notesImages/informationmodel_datamodel_overview_image27.png" alt="informationmodel_datamodel_overview_image27"></a>
@@ -526,7 +526,7 @@ by IBM
 
 ### Types of Relationships
 
-* Lecture course_overview
+* Lecture overview
 				<p align="center">
 				  <a href="javascript:void(0)" rel="noopener">
 					 <img width=600px  src="notesImages/relationships_overview_image35.png" alt="relationships_overview_image35"></a>
@@ -611,7 +611,7 @@ by IBM
 
 ### Mapping Entities to Tables
 
-* Lecture course_overview
+* Lecture overview
 				<p align="center">
 				  <a href="javascript:void(0)" rel="noopener">
 					 <img width=600px  src="notesImages/mapping_entities_overview_image43.png" alt="mapping_entities_overview_image43"></a>
@@ -657,7 +657,7 @@ by IBM
 
 ### Relational Model Concepts
 
-* Lecture course_overview
+* Lecture overview
 				<p align="center">
 				  <a href="javascript:void(0)" rel="noopener">
 					 <img width=600px  src="notesImages/relational_model_overview_image48.png" alt="relational_model_overview_image48"></a>
