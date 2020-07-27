@@ -127,7 +127,6 @@ by IBM
 * At times, a select statement result set can contain duplicate values
 * __DISTINCT__ Clause
 	* To eliminate duplicates, we use the keyword __distinct__
-	* 
 	* Example
 		1. We need is a list of countries the authors come from
 				<p align="center">
