@@ -420,12 +420,12 @@ by IBM
 					  <a href="javascript:void(0)" rel="noopener">
 						 <img width=600px  src="notesImages/left_outer_join_sample_output_image32.png" alt="left_outer_join_sample_output_image32"></a>
 					</p>
-			* Notice there is a loan date for the first five rows: D1-D5. However, for the last three rows, the borrow ID and loan date show null values
-				* A null value indicates an unknown value
-			* When using a Left Join, if the right table does not have a corresponding value, a null value is returned
-			* In this example, borrowers Peters, Li, and Wong, whose borrower IDs are D8, D6, and D7 have never taken a book out on loan
-				* Therefore, there is no corresponding Borrower ID value in the loan table
-					* Therefore, the result set displayed null values for these Borrower IDs
+		* Notice there is a loan date for the first five rows: D1-D5. However, for the last three rows, the borrow ID and loan date show null values
+			* A null value indicates an unknown value
+		* When using a Left Join, if the right table does not have a corresponding value, a null value is returned
+		* In this example, borrowers Peters, Li, and Wong, whose borrower IDs are D8, D6, and D7 have never taken a book out on loan
+			* Therefore, there is no corresponding Borrower ID value in the loan table
+				* Therefore, the result set displayed null values for these Borrower IDs
 
 ### Right Outer Join
 
@@ -453,8 +453,8 @@ by IBM
 					  <a href="javascript:void(0)" rel="noopener">
 						 <img width=600px  src="notesImages/right_outer_join_sample_output_image35.png" alt="right_outer_join_sample_output_image35"></a>
 					</p>
-			* The Result Set shows each borrower ID from the loan table and the loan date for that borrower, where the borrower ID in the loan table also exists in the borrower table
-			* There are five rows in the Result Set
+		* The Result Set shows each borrower ID from the loan table and the loan date for that borrower, where the borrower ID in the loan table also exists in the borrower table
+		* There are five rows in the Result Set
 
 ### Full Outer Join
 
@@ -483,12 +483,12 @@ by IBM
 					  <a href="javascript:void(0)" rel="noopener">
 						 <img width=600px  src="notesImages/full_outer_join_sample_output_image38.png" alt="full_outer_join_sample_output_image38"></a>
 					</p>
-			* The result set shows all rows from the borrower table and all rows from the loan table
-			* There are eight rows in the result set
-			* All eight records from the borrower table are listed with the corresponding data from the loan table
-			* However, in the last three rows the columns borrower ID and loan date from the loan table do not have a corresponding borrower ID
-				* So a null value is returned
-				* A null value is returned because borrowers Peters, Li, and Wong have never taken a book out on loan
-				* Therefore, there is no corresponding borrower ID value in the loan table
+		* The result set shows all rows from the borrower table and all rows from the loan table
+		* There are eight rows in the result set
+		* All eight records from the borrower table are listed with the corresponding data from the loan table
+		* However, in the last three rows the columns borrower ID and loan date from the loan table do not have a corresponding borrower ID
+			* So a null value is returned
+			* A null value is returned because borrowers Peters, Li, and Wong have never taken a book out on loan
+			* Therefore, there is no corresponding borrower ID value in the loan table
 
 
