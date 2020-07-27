@@ -1,0 +1,827 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{DB0201EN-Week3-1-3-SQLmagic-v3-py}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    Accessing Databases with SQL Magic
+
+    \hypertarget{after-using-this-notebook-you-will-know-how-to-perform-simplified-database-access-using-sql-magic.-you-will-connect-to-a-db2-database-issue-sql-commands-to-create-tables-insert-data-and-run-queries-as-well-as-retrieve-results-in-a-python-dataframe.}{%
+\paragraph{After using this notebook, you will know how to perform
+simplified database access using SQL ``magic''. You will connect to a
+Db2 database, issue SQL commands to create tables, insert data, and run
+queries, as well as retrieve results in a Python
+dataframe.}\label{after-using-this-notebook-you-will-know-how-to-perform-simplified-database-access-using-sql-magic.-you-will-connect-to-a-db2-database-issue-sql-commands-to-create-tables-insert-data-and-run-queries-as-well-as-retrieve-results-in-a-python-dataframe.}}
+
+    \hypertarget{to-communicate-with-sql-databases-from-within-a-jupyterlab-notebook-we-can-use-the-sql-magic-provided-by-the-ipython-sql-extension.-magic-is-jupyterlabs-term-for-special-commands-that-start-with-.-below-well-use-the-load_ext-magic-to-load-the-ipython-sql-extension.-in-the-lab-environemnt-provided-in-the-course-the-ipython-sql-extension-is-already-installed-and-so-is-the-ibm_db_sa-driver.}{%
+\subparagraph{\texorpdfstring{To communicate with SQL Databases from
+within a JupyterLab notebook, we can use the SQL ``magic'' provided by
+the \href{https://github.com/catherinedevlin/ipython-sql}{ipython-sql}
+extension. ``Magic'' is JupyterLab's term for special commands that
+start with ``\%''. Below, we'll use the \emph{load}\_\emph{ext} magic to
+load the ipython-sql extension. In the lab environemnt provided in the
+course the ipython-sql extension is already installed and so is the
+ibm\_db\_sa
+driver.}{To communicate with SQL Databases from within a JupyterLab notebook, we can use the SQL ``magic'' provided by the ipython-sql extension. ``Magic'' is JupyterLab's term for special commands that start with ``\%''. Below, we'll use the load\_ext magic to load the ipython-sql extension. In the lab environemnt provided in the course the ipython-sql extension is already installed and so is the ibm\_db\_sa driver.}}\label{to-communicate-with-sql-databases-from-within-a-jupyterlab-notebook-we-can-use-the-sql-magic-provided-by-the-ipython-sql-extension.-magic-is-jupyterlabs-term-for-special-commands-that-start-with-.-below-well-use-the-load_ext-magic-to-load-the-ipython-sql-extension.-in-the-lab-environemnt-provided-in-the-course-the-ipython-sql-extension-is-already-installed-and-so-is-the-ibm_db_sa-driver.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} sql
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{now-we-have-access-to-sql-magic.-with-our-first-sql-magic-command-well-connect-to-a-db2-database.-however-in-order-to-do-that-youll-first-need-to-retrieve-or-create-your-credentials-to-access-your-db2-database.}{%
+\subparagraph{Now we have access to SQL magic. With our first SQL magic
+command, we'll connect to a Db2 database. However, in order to do that,
+you'll first need to retrieve or create your credentials to access your
+Db2
+database.}\label{now-we-have-access-to-sql-magic.-with-our-first-sql-magic-command-well-connect-to-a-db2-database.-however-in-order-to-do-that-youll-first-need-to-retrieve-or-create-your-credentials-to-access-your-db2-database.}}
+
+    This image shows the location of your connection string if you're using
+Db2 on IBM Cloud. If you're using another host the format is:
+username:password@hostname:port/database-name
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Enter your Db2 credentials in the connection string below}
+\PY{c+c1}{\PYZsh{} Recall you created Service Credentials in Part III of the first lab of the course in Week 1}
+\PY{c+c1}{\PYZsh{} i.e. from the uri field in the Service Credentials copy everything after db2:// (but remove the double quote at the end)}
+\PY{c+c1}{\PYZsh{} for example, if your credentials are as in the screenshot above, you would write:}
+\PY{c+c1}{\PYZsh{} \PYZpc{}sql ibm\PYZus{}db\PYZus{}sa://my\PYZhy{}username:my\PYZhy{}password@dashdb\PYZhy{}txn\PYZhy{}sbox\PYZhy{}yp\PYZhy{}dal09\PYZhy{}03.services.dal.bluemix.net:50000/BLUDB}
+\PY{c+c1}{\PYZsh{} Note the ibm\PYZus{}db\PYZus{}sa:// prefix instead of db2://}
+\PY{c+c1}{\PYZsh{} This is because JupyterLab\PYZsq{}s ipython\PYZhy{}sql extension uses sqlalchemy (a python SQL toolkit)}
+\PY{c+c1}{\PYZsh{} which in turn uses IBM\PYZsq{}s sqlalchemy dialect: ibm\PYZus{}db\PYZus{}sa}
+\PY{o}{\PYZpc{}}\PY{k}{sql} ibm\PYZus{}db\PYZus{}sa://USER\PYZhy{}ID:PASSWORD@HOSTNAME:PORT\PYZhy{}NUMBER/DATABASE\PYZhy{}NAME
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Connected: nrx71347@BLUDB'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{for-convenience-we-can-use-sql-two-s-instead-of-one-at-the-top-of-a-cell-to-indicate-we-want-the-entire-cell-to-be-treated-as-sql.-lets-use-this-to-create-a-table-and-fill-it-with-some-test-data-for-experimenting.}{%
+\subparagraph{For convenience, we can use \%\%sql (two \%'s instead of
+one) at the top of a cell to indicate we want the entire cell to be
+treated as SQL. Let's use this to create a table and fill it with some
+test data for
+experimenting.}\label{for-convenience-we-can-use-sql-two-s-instead-of-one-at-the-top-of-a-cell-to-indicate-we-want-the-entire-cell-to-be-treated-as-sql.-lets-use-this-to-create-a-table-and-fill-it-with-some-test-data-for-experimenting.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{sql}
+
+CREATE TABLE INTERNATIONAL\PYZus{}STUDENT\PYZus{}TEST\PYZus{}SCORES (
+	country VARCHAR(50),
+	first\PYZus{}name VARCHAR(50),
+	last\PYZus{}name VARCHAR(50),
+	test\PYZus{}score INT
+);
+INSERT INTO INTERNATIONAL\PYZus{}STUDENT\PYZus{}TEST\PYZus{}SCORES (country, first\PYZus{}name, last\PYZus{}name, test\PYZus{}score)
+VALUES
+(\PYZsq{}United States\PYZsq{}, \PYZsq{}Marshall\PYZsq{}, \PYZsq{}Bernadot\PYZsq{}, 54),
+(\PYZsq{}Ghana\PYZsq{}, \PYZsq{}Celinda\PYZsq{}, \PYZsq{}Malkin\PYZsq{}, 51),
+(\PYZsq{}Ukraine\PYZsq{}, \PYZsq{}Guillermo\PYZsq{}, \PYZsq{}Furze\PYZsq{}, 53),
+(\PYZsq{}Greece\PYZsq{}, \PYZsq{}Aharon\PYZsq{}, \PYZsq{}Tunnow\PYZsq{}, 48),
+(\PYZsq{}Russia\PYZsq{}, \PYZsq{}Bail\PYZsq{}, \PYZsq{}Goodwin\PYZsq{}, 46),
+(\PYZsq{}Poland\PYZsq{}, \PYZsq{}Cole\PYZsq{}, \PYZsq{}Winteringham\PYZsq{}, 49),
+(\PYZsq{}Sweden\PYZsq{}, \PYZsq{}Emlyn\PYZsq{}, \PYZsq{}Erricker\PYZsq{}, 55),
+(\PYZsq{}Russia\PYZsq{}, \PYZsq{}Cathee\PYZsq{}, \PYZsq{}Sivewright\PYZsq{}, 49),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Barny\PYZsq{}, \PYZsq{}Ingerson\PYZsq{}, 57),
+(\PYZsq{}Uganda\PYZsq{}, \PYZsq{}Sharla\PYZsq{}, \PYZsq{}Papaccio\PYZsq{}, 55),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Stella\PYZsq{}, \PYZsq{}Youens\PYZsq{}, 51),
+(\PYZsq{}Poland\PYZsq{}, \PYZsq{}Julio\PYZsq{}, \PYZsq{}Buesden\PYZsq{}, 48),
+(\PYZsq{}United States\PYZsq{}, \PYZsq{}Tiffie\PYZsq{}, \PYZsq{}Cosely\PYZsq{}, 58),
+(\PYZsq{}Poland\PYZsq{}, \PYZsq{}Auroora\PYZsq{}, \PYZsq{}Stiffell\PYZsq{}, 45),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Clarita\PYZsq{}, \PYZsq{}Huet\PYZsq{}, 52),
+(\PYZsq{}Poland\PYZsq{}, \PYZsq{}Shannon\PYZsq{}, \PYZsq{}Goulden\PYZsq{}, 45),
+(\PYZsq{}Philippines\PYZsq{}, \PYZsq{}Emylee\PYZsq{}, \PYZsq{}Privost\PYZsq{}, 50),
+(\PYZsq{}France\PYZsq{}, \PYZsq{}Madelina\PYZsq{}, \PYZsq{}Burk\PYZsq{}, 49),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Saunderson\PYZsq{}, \PYZsq{}Root\PYZsq{}, 58),
+(\PYZsq{}Indonesia\PYZsq{}, \PYZsq{}Bo\PYZsq{}, \PYZsq{}Waring\PYZsq{}, 55),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Hollis\PYZsq{}, \PYZsq{}Domotor\PYZsq{}, 45),
+(\PYZsq{}Russia\PYZsq{}, \PYZsq{}Robbie\PYZsq{}, \PYZsq{}Collip\PYZsq{}, 46),
+(\PYZsq{}Philippines\PYZsq{}, \PYZsq{}Davon\PYZsq{}, \PYZsq{}Donisi\PYZsq{}, 46),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Cristabel\PYZsq{}, \PYZsq{}Radeliffe\PYZsq{}, 48),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Wallis\PYZsq{}, \PYZsq{}Bartleet\PYZsq{}, 58),
+(\PYZsq{}Moldova\PYZsq{}, \PYZsq{}Arleen\PYZsq{}, \PYZsq{}Stailey\PYZsq{}, 38),
+(\PYZsq{}Ireland\PYZsq{}, \PYZsq{}Mendel\PYZsq{}, \PYZsq{}Grumble\PYZsq{}, 58),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Sallyann\PYZsq{}, \PYZsq{}Exley\PYZsq{}, 51),
+(\PYZsq{}Mexico\PYZsq{}, \PYZsq{}Kain\PYZsq{}, \PYZsq{}Swaite\PYZsq{}, 46),
+(\PYZsq{}Indonesia\PYZsq{}, \PYZsq{}Alonso\PYZsq{}, \PYZsq{}Bulteel\PYZsq{}, 45),
+(\PYZsq{}Armenia\PYZsq{}, \PYZsq{}Anatol\PYZsq{}, \PYZsq{}Tankus\PYZsq{}, 51),
+(\PYZsq{}Indonesia\PYZsq{}, \PYZsq{}Coralyn\PYZsq{}, \PYZsq{}Dawkins\PYZsq{}, 48),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Deanne\PYZsq{}, \PYZsq{}Edwinson\PYZsq{}, 45),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Georgiana\PYZsq{}, \PYZsq{}Epple\PYZsq{}, 51),
+(\PYZsq{}Portugal\PYZsq{}, \PYZsq{}Bartlet\PYZsq{}, \PYZsq{}Breese\PYZsq{}, 56),
+(\PYZsq{}Azerbaijan\PYZsq{}, \PYZsq{}Idalina\PYZsq{}, \PYZsq{}Lukash\PYZsq{}, 50),
+(\PYZsq{}France\PYZsq{}, \PYZsq{}Livvie\PYZsq{}, \PYZsq{}Flory\PYZsq{}, 54),
+(\PYZsq{}Malaysia\PYZsq{}, \PYZsq{}Nonie\PYZsq{}, \PYZsq{}Borit\PYZsq{}, 48),
+(\PYZsq{}Indonesia\PYZsq{}, \PYZsq{}Clio\PYZsq{}, \PYZsq{}Mugg\PYZsq{}, 47),
+(\PYZsq{}Brazil\PYZsq{}, \PYZsq{}Westley\PYZsq{}, \PYZsq{}Measor\PYZsq{}, 48),
+(\PYZsq{}Philippines\PYZsq{}, \PYZsq{}Katrinka\PYZsq{}, \PYZsq{}Sibbert\PYZsq{}, 51),
+(\PYZsq{}Poland\PYZsq{}, \PYZsq{}Valentia\PYZsq{}, \PYZsq{}Mounch\PYZsq{}, 50),
+(\PYZsq{}Norway\PYZsq{}, \PYZsq{}Sheilah\PYZsq{}, \PYZsq{}Hedditch\PYZsq{}, 53),
+(\PYZsq{}Papua New Guinea\PYZsq{}, \PYZsq{}Itch\PYZsq{}, \PYZsq{}Jubb\PYZsq{}, 50),
+(\PYZsq{}Latvia\PYZsq{}, \PYZsq{}Stesha\PYZsq{}, \PYZsq{}Garnson\PYZsq{}, 53),
+(\PYZsq{}Canada\PYZsq{}, \PYZsq{}Cristionna\PYZsq{}, \PYZsq{}Wadmore\PYZsq{}, 46),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Lianna\PYZsq{}, \PYZsq{}Gatward\PYZsq{}, 43),
+(\PYZsq{}Guatemala\PYZsq{}, \PYZsq{}Tanney\PYZsq{}, \PYZsq{}Vials\PYZsq{}, 48),
+(\PYZsq{}France\PYZsq{}, \PYZsq{}Alma\PYZsq{}, \PYZsq{}Zavittieri\PYZsq{}, 44),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Alvira\PYZsq{}, \PYZsq{}Tamas\PYZsq{}, 50),
+(\PYZsq{}United States\PYZsq{}, \PYZsq{}Shanon\PYZsq{}, \PYZsq{}Peres\PYZsq{}, 45),
+(\PYZsq{}Sweden\PYZsq{}, \PYZsq{}Maisey\PYZsq{}, \PYZsq{}Lynas\PYZsq{}, 53),
+(\PYZsq{}Indonesia\PYZsq{}, \PYZsq{}Kip\PYZsq{}, \PYZsq{}Hothersall\PYZsq{}, 46),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Cash\PYZsq{}, \PYZsq{}Landis\PYZsq{}, 48),
+(\PYZsq{}Panama\PYZsq{}, \PYZsq{}Kennith\PYZsq{}, \PYZsq{}Digance\PYZsq{}, 45),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Ulberto\PYZsq{}, \PYZsq{}Riggeard\PYZsq{}, 48),
+(\PYZsq{}Switzerland\PYZsq{}, \PYZsq{}Judy\PYZsq{}, \PYZsq{}Gilligan\PYZsq{}, 49),
+(\PYZsq{}Philippines\PYZsq{}, \PYZsq{}Tod\PYZsq{}, \PYZsq{}Trevaskus\PYZsq{}, 52),
+(\PYZsq{}Brazil\PYZsq{}, \PYZsq{}Herold\PYZsq{}, \PYZsq{}Heggs\PYZsq{}, 44),
+(\PYZsq{}Latvia\PYZsq{}, \PYZsq{}Verney\PYZsq{}, \PYZsq{}Note\PYZsq{}, 50),
+(\PYZsq{}Poland\PYZsq{}, \PYZsq{}Temp\PYZsq{}, \PYZsq{}Ribey\PYZsq{}, 50),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Conroy\PYZsq{}, \PYZsq{}Egdal\PYZsq{}, 48),
+(\PYZsq{}Japan\PYZsq{}, \PYZsq{}Gabie\PYZsq{}, \PYZsq{}Alessandone\PYZsq{}, 47),
+(\PYZsq{}Ukraine\PYZsq{}, \PYZsq{}Devlen\PYZsq{}, \PYZsq{}Chaperlin\PYZsq{}, 54),
+(\PYZsq{}France\PYZsq{}, \PYZsq{}Babbette\PYZsq{}, \PYZsq{}Turner\PYZsq{}, 51),
+(\PYZsq{}Czech Republic\PYZsq{}, \PYZsq{}Virgil\PYZsq{}, \PYZsq{}Scotney\PYZsq{}, 52),
+(\PYZsq{}Tajikistan\PYZsq{}, \PYZsq{}Zorina\PYZsq{}, \PYZsq{}Bedow\PYZsq{}, 49),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Aidan\PYZsq{}, \PYZsq{}Rudeyeard\PYZsq{}, 50),
+(\PYZsq{}Ireland\PYZsq{}, \PYZsq{}Saunder\PYZsq{}, \PYZsq{}MacLice\PYZsq{}, 48),
+(\PYZsq{}France\PYZsq{}, \PYZsq{}Waly\PYZsq{}, \PYZsq{}Brunstan\PYZsq{}, 53),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Gisele\PYZsq{}, \PYZsq{}Enns\PYZsq{}, 52),
+(\PYZsq{}Peru\PYZsq{}, \PYZsq{}Mina\PYZsq{}, \PYZsq{}Winchester\PYZsq{}, 48),
+(\PYZsq{}Japan\PYZsq{}, \PYZsq{}Torie\PYZsq{}, \PYZsq{}MacShirrie\PYZsq{}, 50),
+(\PYZsq{}Russia\PYZsq{}, \PYZsq{}Benjamen\PYZsq{}, \PYZsq{}Kenford\PYZsq{}, 51),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Etan\PYZsq{}, \PYZsq{}Burn\PYZsq{}, 53),
+(\PYZsq{}Russia\PYZsq{}, \PYZsq{}Merralee\PYZsq{}, \PYZsq{}Chaperlin\PYZsq{}, 38),
+(\PYZsq{}Indonesia\PYZsq{}, \PYZsq{}Lanny\PYZsq{}, \PYZsq{}Malam\PYZsq{}, 49),
+(\PYZsq{}Canada\PYZsq{}, \PYZsq{}Wilhelm\PYZsq{}, \PYZsq{}Deeprose\PYZsq{}, 54),
+(\PYZsq{}Czech Republic\PYZsq{}, \PYZsq{}Lari\PYZsq{}, \PYZsq{}Hillhouse\PYZsq{}, 48),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Ossie\PYZsq{}, \PYZsq{}Woodley\PYZsq{}, 52),
+(\PYZsq{}Macedonia\PYZsq{}, \PYZsq{}April\PYZsq{}, \PYZsq{}Tyer\PYZsq{}, 50),
+(\PYZsq{}Vietnam\PYZsq{}, \PYZsq{}Madelon\PYZsq{}, \PYZsq{}Dansey\PYZsq{}, 53),
+(\PYZsq{}Ukraine\PYZsq{}, \PYZsq{}Korella\PYZsq{}, \PYZsq{}McNamee\PYZsq{}, 52),
+(\PYZsq{}Jamaica\PYZsq{}, \PYZsq{}Linnea\PYZsq{}, \PYZsq{}Cannam\PYZsq{}, 43),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Mart\PYZsq{}, \PYZsq{}Coling\PYZsq{}, 52),
+(\PYZsq{}Indonesia\PYZsq{}, \PYZsq{}Marna\PYZsq{}, \PYZsq{}Causbey\PYZsq{}, 47),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Berni\PYZsq{}, \PYZsq{}Daintier\PYZsq{}, 55),
+(\PYZsq{}Poland\PYZsq{}, \PYZsq{}Cynthia\PYZsq{}, \PYZsq{}Hassell\PYZsq{}, 49),
+(\PYZsq{}Canada\PYZsq{}, \PYZsq{}Carma\PYZsq{}, \PYZsq{}Schule\PYZsq{}, 49),
+(\PYZsq{}Indonesia\PYZsq{}, \PYZsq{}Malia\PYZsq{}, \PYZsq{}Blight\PYZsq{}, 48),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Paulo\PYZsq{}, \PYZsq{}Seivertsen\PYZsq{}, 47),
+(\PYZsq{}Niger\PYZsq{}, \PYZsq{}Kaylee\PYZsq{}, \PYZsq{}Hearley\PYZsq{}, 54),
+(\PYZsq{}Japan\PYZsq{}, \PYZsq{}Maure\PYZsq{}, \PYZsq{}Jandak\PYZsq{}, 46),
+(\PYZsq{}Argentina\PYZsq{}, \PYZsq{}Foss\PYZsq{}, \PYZsq{}Feavers\PYZsq{}, 45),
+(\PYZsq{}Venezuela\PYZsq{}, \PYZsq{}Ron\PYZsq{}, \PYZsq{}Leggitt\PYZsq{}, 60),
+(\PYZsq{}Russia\PYZsq{}, \PYZsq{}Flint\PYZsq{}, \PYZsq{}Gokes\PYZsq{}, 40),
+(\PYZsq{}China\PYZsq{}, \PYZsq{}Linet\PYZsq{}, \PYZsq{}Conelly\PYZsq{}, 52),
+(\PYZsq{}Philippines\PYZsq{}, \PYZsq{}Nikolas\PYZsq{}, \PYZsq{}Birtwell\PYZsq{}, 57),
+(\PYZsq{}Australia\PYZsq{}, \PYZsq{}Eduard\PYZsq{}, \PYZsq{}Leipelt\PYZsq{}, 53)
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+99 rows affected.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{using-python-variables-in-your-sql-statements}{%
+\paragraph{Using Python Variables in your SQL
+Statements}\label{using-python-variables-in-your-sql-statements}}
+
+\hypertarget{you-can-use-python-variables-in-your-sql-statements-by-adding-a-prefix-to-your-python-variable-names.}{%
+\subparagraph{You can use python variables in your SQL statements by
+adding a ``:'' prefix to your python variable
+names.}\label{you-can-use-python-variables-in-your-sql-statements-by-adding-a-prefix-to-your-python-variable-names.}}
+
+\hypertarget{for-example-if-i-have-a-python-variable-country-with-a-value-of-canada-i-can-use-this-variable-in-a-sql-query-to-find-all-the-rows-of-students-from-canada.}{%
+\subparagraph{\texorpdfstring{For example, if I have a python variable
+\texttt{country} with a value of \texttt{"Canada"}, I can use this
+variable in a SQL query to find all the rows of students from
+Canada.}{For example, if I have a python variable country with a value of "Canada", I can use this variable in a SQL query to find all the rows of students from Canada.}}\label{for-example-if-i-have-a-python-variable-country-with-a-value-of-canada-i-can-use-this-variable-in-a-sql-query-to-find-all-the-rows-of-students-from-canada.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{country} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Canada}\PY{l+s+s2}{\PYZdq{}}
+\PY{o}{\PYZpc{}}\PY{k}{sql} select * from INTERNATIONAL\PYZus{}STUDENT\PYZus{}TEST\PYZus{}SCORES where country = :country
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[('Canada', 'Cristionna', 'Wadmore', 46),
+ ('Canada', 'Wilhelm', 'Deeprose', 54),
+ ('Canada', 'Carma', 'Schule', 49)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{assigning-the-results-of-queries-to-python-variables}{%
+\paragraph{Assigning the Results of Queries to Python
+Variables}\label{assigning-the-results-of-queries-to-python-variables}}
+
+    \hypertarget{you-can-use-the-normal-python-assignment-syntax-to-assign-the-results-of-your-queries-to-python-variables.}{%
+\subparagraph{You can use the normal python assignment syntax to assign
+the results of your queries to python
+variables.}\label{you-can-use-the-normal-python-assignment-syntax-to-assign-the-results-of-your-queries-to-python-variables.}}
+
+\hypertarget{for-example-i-have-a-sql-query-to-retrieve-the-distribution-of-test-scores-i.e.how-many-students-got-each-score.-i-can-assign-the-result-of-this-query-to-the-variable-test_score_distribution-using-the-operator.}{%
+\subparagraph{\texorpdfstring{For example, I have a SQL query to
+retrieve the distribution of test scores (i.e.~how many students got
+each score). I can assign the result of this query to the variable
+\texttt{test\_score\_distribution} using the \texttt{=}
+operator.}{For example, I have a SQL query to retrieve the distribution of test scores (i.e.~how many students got each score). I can assign the result of this query to the variable test\_score\_distribution using the = operator.}}\label{for-example-i-have-a-sql-query-to-retrieve-the-distribution-of-test-scores-i.e.how-many-students-got-each-score.-i-can-assign-the-result-of-this-query-to-the-variable-test_score_distribution-using-the-operator.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{test\PYZus{}score\PYZus{}distribution} \PY{o}{=} \PY{o}{\PYZpc{}}\PY{k}{sql} SELECT test\PYZus{}score as \PYZdq{}Test Score\PYZdq{}, count(*) as \PYZdq{}Frequency\PYZdq{} from INTERNATIONAL\PYZus{}STUDENT\PYZus{}TEST\PYZus{}SCORES GROUP BY test\PYZus{}score;
+\PY{n}{test\PYZus{}score\PYZus{}distribution}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[(38, Decimal('2')),
+ (40, Decimal('1')),
+ (43, Decimal('2')),
+ (44, Decimal('2')),
+ (45, Decimal('8')),
+ (46, Decimal('7')),
+ (47, Decimal('4')),
+ (48, Decimal('14')),
+ (49, Decimal('8')),
+ (50, Decimal('10')),
+ (51, Decimal('8')),
+ (52, Decimal('8')),
+ (53, Decimal('8')),
+ (54, Decimal('5')),
+ (55, Decimal('4')),
+ (56, Decimal('1')),
+ (57, Decimal('2')),
+ (58, Decimal('4')),
+ (60, Decimal('1'))]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{converting-query-results-to-dataframes}{%
+\paragraph{Converting Query Results to
+DataFrames}\label{converting-query-results-to-dataframes}}
+
+    \hypertarget{you-can-easily-convert-a-sql-query-result-to-a-pandas-dataframe-using-the-dataframe-method.-dataframe-objects-are-much-more-versatile-than-sql-query-result-objects.-for-example-we-can-easily-graph-our-test-score-distribution-after-converting-to-a-dataframe.}{%
+\subparagraph{\texorpdfstring{You can easily convert a SQL query result
+to a pandas dataframe using the \texttt{DataFrame()} method. Dataframe
+objects are much more versatile than SQL query result objects. For
+example, we can easily graph our test score distribution after
+converting to a
+dataframe.}{You can easily convert a SQL query result to a pandas dataframe using the DataFrame() method. Dataframe objects are much more versatile than SQL query result objects. For example, we can easily graph our test score distribution after converting to a dataframe.}}\label{you-can-easily-convert-a-sql-query-result-to-a-pandas-dataframe-using-the-dataframe-method.-dataframe-objects-are-much-more-versatile-than-sql-query-result-objects.-for-example-we-can-easily-graph-our-test-score-distribution-after-converting-to-a-dataframe.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dataframe} \PY{o}{=} \PY{n}{test\PYZus{}score\PYZus{}distribution}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{c+c1}{\PYZsh{} uncomment the following line if you get an module error saying seaborn not found}
+\PY{c+c1}{\PYZsh{} !pip install seaborn}
+\PY{k+kn}{import} \PY{n+nn}{seaborn}
+
+\PY{n}{plot} \PY{o}{=} \PY{n}{seaborn}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{dataframe}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Now you know how to work with Db2 from within JupyterLab notebooks using
+SQL ``magic''!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{sql} 
+
+\PYZhy{}\PYZhy{} Feel free to experiment with the data set provided in this notebook for practice:
+SELECT country, first\PYZus{}name, last\PYZus{}name, test\PYZus{}score FROM INTERNATIONAL\PYZus{}STUDENT\PYZus{}TEST\PYZus{}SCORES;    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[('United States', 'Marshall', 'Bernadot', 54),
+ ('Ghana', 'Celinda', 'Malkin', 51),
+ ('Ukraine', 'Guillermo', 'Furze', 53),
+ ('Greece', 'Aharon', 'Tunnow', 48),
+ ('Russia', 'Bail', 'Goodwin', 46),
+ ('Poland', 'Cole', 'Winteringham', 49),
+ ('Sweden', 'Emlyn', 'Erricker', 55),
+ ('Russia', 'Cathee', 'Sivewright', 49),
+ ('China', 'Barny', 'Ingerson', 57),
+ ('Uganda', 'Sharla', 'Papaccio', 55),
+ ('China', 'Stella', 'Youens', 51),
+ ('Poland', 'Julio', 'Buesden', 48),
+ ('United States', 'Tiffie', 'Cosely', 58),
+ ('Poland', 'Auroora', 'Stiffell', 45),
+ ('China', 'Clarita', 'Huet', 52),
+ ('Poland', 'Shannon', 'Goulden', 45),
+ ('Philippines', 'Emylee', 'Privost', 50),
+ ('France', 'Madelina', 'Burk', 49),
+ ('China', 'Saunderson', 'Root', 58),
+ ('Indonesia', 'Bo', 'Waring', 55),
+ ('China', 'Hollis', 'Domotor', 45),
+ ('Russia', 'Robbie', 'Collip', 46),
+ ('Philippines', 'Davon', 'Donisi', 46),
+ ('China', 'Cristabel', 'Radeliffe', 48),
+ ('China', 'Wallis', 'Bartleet', 58),
+ ('Moldova', 'Arleen', 'Stailey', 38),
+ ('Ireland', 'Mendel', 'Grumble', 58),
+ ('China', 'Sallyann', 'Exley', 51),
+ ('Mexico', 'Kain', 'Swaite', 46),
+ ('Indonesia', 'Alonso', 'Bulteel', 45),
+ ('Armenia', 'Anatol', 'Tankus', 51),
+ ('Indonesia', 'Coralyn', 'Dawkins', 48),
+ ('China', 'Deanne', 'Edwinson', 45),
+ ('China', 'Georgiana', 'Epple', 51),
+ ('Portugal', 'Bartlet', 'Breese', 56),
+ ('Azerbaijan', 'Idalina', 'Lukash', 50),
+ ('France', 'Livvie', 'Flory', 54),
+ ('Malaysia', 'Nonie', 'Borit', 48),
+ ('Indonesia', 'Clio', 'Mugg', 47),
+ ('Brazil', 'Westley', 'Measor', 48),
+ ('Philippines', 'Katrinka', 'Sibbert', 51),
+ ('Poland', 'Valentia', 'Mounch', 50),
+ ('Norway', 'Sheilah', 'Hedditch', 53),
+ ('Papua New Guinea', 'Itch', 'Jubb', 50),
+ ('Latvia', 'Stesha', 'Garnson', 53),
+ ('Canada', 'Cristionna', 'Wadmore', 46),
+ ('China', 'Lianna', 'Gatward', 43),
+ ('Guatemala', 'Tanney', 'Vials', 48),
+ ('France', 'Alma', 'Zavittieri', 44),
+ ('China', 'Alvira', 'Tamas', 50),
+ ('United States', 'Shanon', 'Peres', 45),
+ ('Sweden', 'Maisey', 'Lynas', 53),
+ ('Indonesia', 'Kip', 'Hothersall', 46),
+ ('China', 'Cash', 'Landis', 48),
+ ('Panama', 'Kennith', 'Digance', 45),
+ ('China', 'Ulberto', 'Riggeard', 48),
+ ('Switzerland', 'Judy', 'Gilligan', 49),
+ ('Philippines', 'Tod', 'Trevaskus', 52),
+ ('Brazil', 'Herold', 'Heggs', 44),
+ ('Latvia', 'Verney', 'Note', 50),
+ ('Poland', 'Temp', 'Ribey', 50),
+ ('China', 'Conroy', 'Egdal', 48),
+ ('Japan', 'Gabie', 'Alessandone', 47),
+ ('Ukraine', 'Devlen', 'Chaperlin', 54),
+ ('France', 'Babbette', 'Turner', 51),
+ ('Czech Republic', 'Virgil', 'Scotney', 52),
+ ('Tajikistan', 'Zorina', 'Bedow', 49),
+ ('China', 'Aidan', 'Rudeyeard', 50),
+ ('Ireland', 'Saunder', 'MacLice', 48),
+ ('France', 'Waly', 'Brunstan', 53),
+ ('China', 'Gisele', 'Enns', 52),
+ ('Peru', 'Mina', 'Winchester', 48),
+ ('Japan', 'Torie', 'MacShirrie', 50),
+ ('Russia', 'Benjamen', 'Kenford', 51),
+ ('China', 'Etan', 'Burn', 53),
+ ('Russia', 'Merralee', 'Chaperlin', 38),
+ ('Indonesia', 'Lanny', 'Malam', 49),
+ ('Canada', 'Wilhelm', 'Deeprose', 54),
+ ('Czech Republic', 'Lari', 'Hillhouse', 48),
+ ('China', 'Ossie', 'Woodley', 52),
+ ('Macedonia', 'April', 'Tyer', 50),
+ ('Vietnam', 'Madelon', 'Dansey', 53),
+ ('Ukraine', 'Korella', 'McNamee', 52),
+ ('Jamaica', 'Linnea', 'Cannam', 43),
+ ('China', 'Mart', 'Coling', 52),
+ ('Indonesia', 'Marna', 'Causbey', 47),
+ ('China', 'Berni', 'Daintier', 55),
+ ('Poland', 'Cynthia', 'Hassell', 49),
+ ('Canada', 'Carma', 'Schule', 49),
+ ('Indonesia', 'Malia', 'Blight', 48),
+ ('China', 'Paulo', 'Seivertsen', 47),
+ ('Niger', 'Kaylee', 'Hearley', 54),
+ ('Japan', 'Maure', 'Jandak', 46),
+ ('Argentina', 'Foss', 'Feavers', 45),
+ ('Venezuela', 'Ron', 'Leggitt', 60),
+ ('Russia', 'Flint', 'Gokes', 40),
+ ('China', 'Linet', 'Conelly', 52),
+ ('Philippines', 'Nikolas', 'Birtwell', 57),
+ ('Australia', 'Eduard', 'Leipelt', 53)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Copyright © 2018
+\href{cognitiveclass.ai?utm_source=bducopyrightlink\&utm_medium=dswb\&utm_campaign=bdu}{cognitiveclass.ai}.
+This notebook and its source code are released under the terms of the
+\href{https://bigdatauniversity.com/mit-license/}{MIT License}.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
