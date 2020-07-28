@@ -126,13 +126,13 @@ by IBM
 		* Please ensure that you replace ABC12345 with your own DB2 username
 * __Getting Table Properties__
 	* If you want to check which of the was created last
-			```SQL
-			>>> select TABLESCHEMA, TABNAME, CREATE_TIME from syscat.tables where TABLESCHEMA = 'QCM54853'
-			```
-			<p align="center">
-			  <a href="javascript:void(0)" rel="noopener">
-				 <img width=600px  src="notesImages/syscat_tables_output_image8.png" alt="syscat_tables_output_image8"></a>
-			</p>
+		```SQL
+		>>> select TABLESCHEMA, TABNAME, CREATE_TIME from syscat.tables where TABLESCHEMA = 'QCM54853'
+		```
+		<p align="center">
+		  <a href="javascript:void(0)" rel="noopener">
+			 <img width=600px  src="notesImages/syscat_tables_output_image8.png" alt="syscat_tables_output_image8"></a>
+		</p>
 		* The output will contain the schema name, table name, and creation time for all tables in your schema
 * __Getting a List of Columns in the Database__
 	* If you can't recall the exact name of a column for example, whether it had any lowercase characters or an underscore in its name, in DB2 you can issue a query
