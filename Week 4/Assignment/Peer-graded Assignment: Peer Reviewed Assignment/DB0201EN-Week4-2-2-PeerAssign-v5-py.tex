@@ -1,0 +1,895 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{DB0201EN-Week4-2-2-PeerAssign-v5-py}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    Assignment: Notebook for Peer Assignment
+
+    \hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Using this Python notebook you will: 1. Understand 3 Chicago datasets\\
+1. Load the 3 datasets into 3 tables in a Db2 database 1. Execute SQL
+queries to answer assignment questions
+
+    \hypertarget{understand-the-datasets}{%
+\subsection{Understand the datasets}\label{understand-the-datasets}}
+
+To complete the assignment problems in this notebook you will be using
+three datasets that are available on the city of Chicago's Data Portal:
+1. Socioeconomic Indicators in Chicago 1. Chicago Public Schools 1.
+Chicago Crime Data
+
+\hypertarget{socioeconomic-indicators-in-chicago}{%
+\subsubsection{1. Socioeconomic Indicators in
+Chicago}\label{socioeconomic-indicators-in-chicago}}
+
+This dataset contains a selection of six socioeconomic indicators of
+public health significance and a ``hardship index,'' for each Chicago
+community area, for the years 2008 -- 2012.
+
+For this assignment you will use a snapshot of this dataset which can be
+downloaded from:
+https://ibm.box.com/shared/static/05c3415cbfbtfnr2fx4atenb2sd361ze.csv
+
+A detailed description of this dataset and the original dataset can be
+obtained from the Chicago Data Portal at:
+https://data.cityofchicago.org/Health-Human-Services/Census-Data-Selected-socioeconomic-indicators-in-C/kn9c-c2s2
+
+\hypertarget{chicago-public-schools}{%
+\subsubsection{2. Chicago Public Schools}\label{chicago-public-schools}}
+
+This dataset shows all school level performance data used to create CPS
+School Report Cards for the 2011-2012 school year. This dataset is
+provided by the city of Chicago's Data Portal.
+
+For this assignment you will use a snapshot of this dataset which can be
+downloaded from:
+https://ibm.box.com/shared/static/f9gjvj1gjmxxzycdhplzt01qtz0s7ew7.csv
+
+A detailed description of this dataset and the original dataset can be
+obtained from the Chicago Data Portal at:
+https://data.cityofchicago.org/Education/Chicago-Public-Schools-Progress-Report-Cards-2011-/9xs2-f89t
+
+\hypertarget{chicago-crime-data}{%
+\subsubsection{3. Chicago Crime Data}\label{chicago-crime-data}}
+
+This dataset reflects reported incidents of crime (with the exception of
+murders where data exists for each victim) that occurred in the City of
+Chicago from 2001 to present, minus the most recent seven days.
+
+This dataset is quite large - over 1.5GB in size with over 6.5 million
+rows. For the purposes of this assignment we will use a much smaller
+sample of this dataset which can be downloaded from:
+https://ibm.box.com/shared/static/svflyugsr9zbqy5bmowgswqemfpm1x7f.csv
+
+A detailed description of this dataset and the original dataset can be
+obtained from the Chicago Data Portal at:
+https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2
+
+    \hypertarget{download-the-datasets}{%
+\subsubsection{Download the datasets}\label{download-the-datasets}}
+
+In many cases the dataset to be analyzed is available as a .CSV (comma
+separated values) file, perhaps on the internet. Click on the links
+below to download and save the datasets (.CSV files): 1.
+\textbf{CENSUS\_DATA:}
+https://ibm.box.com/shared/static/05c3415cbfbtfnr2fx4atenb2sd361ze.csv
+1. \textbf{CHICAGO\_PUBLIC\_SCHOOLS}
+https://ibm.box.com/shared/static/f9gjvj1gjmxxzycdhplzt01qtz0s7ew7.csv
+1. \textbf{CHICAGO\_CRIME\_DATA:}
+https://ibm.box.com/shared/static/svflyugsr9zbqy5bmowgswqemfpm1x7f.csv
+
+\textbf{NOTE:} Ensure you have downloaded the datasets using the links
+above instead of directly from the Chicago Data Portal. The versions
+linked here are subsets of the original datasets and have some of the
+column names modified to be more database friendly which will make it
+easier to complete this assignment.
+
+    \hypertarget{store-the-datasets-in-database-tables}{%
+\subsubsection{Store the datasets in database
+tables}\label{store-the-datasets-in-database-tables}}
+
+To analyze the data using SQL, it first needs to be stored in the
+database.
+
+While it is easier to read the dataset into a Pandas dataframe and then
+PERSIST it into the database as we saw in Week 3 Lab 3, it results in
+mapping to default datatypes which may not be optimal for SQL querying.
+For example a long textual field may map to a CLOB instead of a VARCHAR.
+
+Therefore, \textbf{it is highly recommended to manually load the table
+using the database console LOAD tool, as indicated in Week 2 Lab 1 Part
+II}. The only difference with that lab is that in Step 5 of the
+instructions you will need to click on create ``(+) New Table'' and
+specify the name of the table you want to create and then click
+``Next''.
+
+\hypertarget{now-open-the-db2-console-open-the-load-tool-select-drag-the-.csv-file-for-the-first-dataset-next-create-a-new-table-and-then-follow-the-steps-on-screen-instructions-to-load-the-data.-name-the-new-tables-as-folows}{%
+\subparagraph{Now open the Db2 console, open the LOAD tool, Select /
+Drag the .CSV file for the first dataset, Next create a New Table, and
+then follow the steps on-screen instructions to load the data. Name the
+new tables as
+folows:}\label{now-open-the-db2-console-open-the-load-tool-select-drag-the-.csv-file-for-the-first-dataset-next-create-a-new-table-and-then-follow-the-steps-on-screen-instructions-to-load-the-data.-name-the-new-tables-as-folows}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{CENSUS\_DATA}
+\item
+  \textbf{CHICAGO\_PUBLIC\_SCHOOLS}
+\item
+  \textbf{CHICAGO\_CRIME\_DATA}
+\end{enumerate}
+
+    \hypertarget{connect-to-the-database}{%
+\subsubsection{Connect to the database}\label{connect-to-the-database}}
+
+Let us first load the SQL extension and establish a connection with the
+database
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} sql
+\end{Verbatim}
+\end{tcolorbox}
+
+    In the next cell enter your db2 connection string. Recall you created
+Service Credentials for your Db2 instance in first lab in Week 3. From
+the \textbf{uri} field of your Db2 service credentials copy everything
+after db2:// (except the double quote at the end) and paste it in the
+cell below after ibm\_db\_sa://
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Remember the connection string is of the format:}
+\PY{c+c1}{\PYZsh{} \PYZpc{}sql ibm\PYZus{}db\PYZus{}sa://my\PYZhy{}username:my\PYZhy{}password@my\PYZhy{}hostname:my\PYZhy{}port/my\PYZhy{}db\PYZhy{}name}
+\PY{c+c1}{\PYZsh{} Enter the connection string for your Db2 on Cloud database instance below}
+\PY{o}{\PYZpc{}}\PY{k}{sql} ibm\PYZus{}db\PYZus{}sa://my\PYZhy{}username:my\PYZhy{}password@my\PYZhy{}hostname:my\PYZhy{}port/my\PYZhy{}db\PYZhy{}name
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'Connected: nrx71347@BLUDB'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problems}{%
+\subsection{Problems}\label{problems}}
+
+Now write and execute SQL queries to solve assignment problems
+
+\hypertarget{problem-1}{%
+\subsubsection{Problem 1}\label{problem-1}}
+
+\hypertarget{find-the-total-number-of-crimes-recorded-in-the-crime-table}{%
+\subparagraph{Find the total number of crimes recorded in the CRIME
+table}\label{find-the-total-number-of-crimes-recorded-in-the-crime-table}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Rows in Crime table}
+\PY{o}{\PYZpc{}}\PY{k}{sql} select count(*) as total\PYZus{}crimes from CRIME\PYZus{}DATA
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[(Decimal('533'),)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problem-2}{%
+\subsubsection{Problem 2}\label{problem-2}}
+
+\hypertarget{retrieve-first-10-rows-from-the-crime-table}{%
+\subparagraph{Retrieve first 10 rows from the CRIME
+table}\label{retrieve-first-10-rows-from-the-crime-table}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{sql} SELECT * FROM CRIME\PYZus{}DATA LIMIT 10
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[(3512276, 'HK587712', datetime.datetime(2004, 8, 28, 17, 50, 56), '047XX S
+KEDZIE AVE', '890', 'THEFT', 'FROM BUILDING', 'SMALL RETAIL STORE', 'FALSE',
+'FALSE', 911, 9, 14, 58, '6', 1155838, 1873050, 2004, datetime.datetime(2018, 2,
+10, 15, 50, 1), Decimal('41.80744050'), Decimal('-87.70395585'), '(41.8074405,
+-87.703955849)'),
+ (3406613, 'HK456306', datetime.datetime(2004, 6, 26, 12, 40), '009XX N CENTRAL
+PARK AVE', '820', 'THEFT', '\$500 AND UNDER', 'OTHER', 'FALSE', 'FALSE', 1112,
+11, 27, 23, '6', 1152206, 1906127, 2004, datetime.datetime(2018, 2, 28, 15, 56,
+25), Decimal('41.89827996'), Decimal('-87.71640551'), '(41.898279962,
+-87.716405505)'),
+ (8002131, 'HT233595', datetime.datetime(2011, 4, 4, 5, 45), '043XX S WABASH
+AVE', '820', 'THEFT', '\$500 AND UNDER', 'NURSING HOME/RETIREMENT HOME', 'FALSE',
+'FALSE', 221, 2, 3, 38, '6', 1177436, 1876313, 2011, datetime.datetime(2018, 2,
+10, 15, 50, 1), Decimal('41.81593313'), Decimal('-87.62464213'), '(41.815933131,
+-87.624642127)'),
+ (7903289, 'HT133522', datetime.datetime(2010, 12, 30, 16, 30), '083XX S
+KINGSTON AVE', '840', 'THEFT', 'FINANCIAL ID THEFT: OVER \$300', 'RESIDENCE',
+'FALSE', 'FALSE', 423, 4, 7, 46, '6', 1194622, 1850125, 2010,
+datetime.datetime(2018, 2, 10, 15, 50, 1), Decimal('41.74366532'),
+Decimal('-87.56246276'), '(41.743665322, -87.562462756)'),
+ (10402076, 'HZ138551', datetime.datetime(2016, 2, 2, 19, 30), '033XX W 66TH
+ST', '820', 'THEFT', '\$500 AND UNDER', 'ALLEY', 'FALSE', 'FALSE', 831, 8, 15,
+66, '6', 1155240, 1860661, 2016, datetime.datetime(2018, 2, 10, 15, 50, 1),
+Decimal('41.77345530'), Decimal('-87.70648047'), '(41.773455295,
+-87.706480471)'),
+ (7732712, 'HS540106', datetime.datetime(2010, 9, 29, 7, 59), '006XX W CHICAGO
+AVE', '810', 'THEFT', 'OVER \$500', 'PARKING LOT/GARAGE(NON.RESID.)', 'FALSE',
+'FALSE', 1323, 12, 27, 24, '6', 1171668, 1905607, 2010, datetime.datetime(2018,
+2, 10, 15, 50, 1), Decimal('41.89644677'), Decimal('-87.64493868'),
+'(41.896446772, -87.644938678)'),
+ (10769475, 'HZ534771', datetime.datetime(2016, 11, 30, 1, 15), '050XX N KEDZIE
+AVE', '810', 'THEFT', 'OVER \$500', 'STREET', 'FALSE', 'FALSE', 1713, 17, 33, 14,
+'6', 1154133, 1933314, 2016, datetime.datetime(2018, 2, 10, 15, 50, 1),
+Decimal('41.97284491'), Decimal('-87.70860008'), '(41.972844913,
+-87.708600079)'),
+ (4494340, 'HL793243', datetime.datetime(2005, 12, 16, 16, 45), '005XX E
+PERSHING RD', '860', 'THEFT', 'RETAIL THEFT', 'GROCERY FOOD STORE', 'TRUE',
+'FALSE', 213, 2, 3, 38, '6', 1180448, 1879234, 2005, datetime.datetime(2018, 2,
+28, 15, 56, 25), Decimal('41.82387989'), Decimal('-87.61350386'),
+'(41.823879885, -87.613503857)'),
+ (3778925, 'HL149610', datetime.datetime(2005, 1, 28, 17, 0), '100XX S WASHTENAW
+AVE', '810', 'THEFT', 'OVER \$500', 'STREET', 'FALSE', 'FALSE', 2211, 22, 19, 72,
+'6', 1160129, 1838040, 2005, datetime.datetime(2018, 2, 28, 15, 56, 25),
+Decimal('41.71128051'), Decimal('-87.68917910'), '(41.711280513,
+-87.689179097)'),
+ (3324217, 'HK361551', datetime.datetime(2004, 5, 13, 14, 15), '033XX W BELMONT
+AVE', '820', 'THEFT', '\$500 AND UNDER', 'SMALL RETAIL STORE', 'FALSE', 'FALSE',
+1733, 17, 35, 21, '6', 1153590, 1921084, 2004, datetime.datetime(2018, 2, 28,
+15, 56, 25), Decimal('41.93929582'), Decimal('-87.71092344'), '(41.939295821,
+-87.710923442)')]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problem-3}{%
+\subsubsection{Problem 3}\label{problem-3}}
+
+\hypertarget{how-many-crimes-involve-an-arrest}{%
+\subparagraph{How many crimes involve an
+arrest?}\label{how-many-crimes-involve-an-arrest}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{sql} SELECT COUNT(*) as total\PYZus{}arrests FROM CRIME\PYZus{}DATA WHERE arrest=TRUE
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[(Decimal('163'),)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problem-4}{%
+\subsubsection{Problem 4}\label{problem-4}}
+
+\hypertarget{which-unique-types-of-crimes-have-been-recorded-at-gas-station-locations}{%
+\subparagraph{Which unique types of crimes have been recorded at GAS
+STATION
+locations?}\label{which-unique-types-of-crimes-have-been-recorded-at-gas-station-locations}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{sql} SELECT DISTINCT(primary\PYZus{}type) as unq\PYZus{}crimes\PYZus{}at\PYZus{}gas\PYZus{}station FROM CRIME\PYZus{}DATA \PYZbs{}
+\PY{n}{WHERE} \PY{n}{location\PYZus{}description}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GAS STATION}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[('CRIMINAL TRESPASS',), ('NARCOTICS',), ('ROBBERY',), ('THEFT',)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Hint: Which column lists types of crimes e.g.~THEFT?
+
+    \hypertarget{problem-5}{%
+\subsubsection{Problem 5}\label{problem-5}}
+
+\hypertarget{in-the-cenus_data-table-list-all-community-areas-whose-names-start-with-the-letter-b.}{%
+\subparagraph{In the CENUS\_DATA table list all Community Areas whose
+names start with the letter
+`B'.}\label{in-the-cenus_data-table-list-all-community-areas-whose-names-start-with-the-letter-b.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{sql} SELECT COMMUNITY\PYZus{}AREA\PYZus{}NAME FROM CENSUS\PYZus{}DATA WHERE COMMUNITY\PYZus{}AREA\PYZus{}NAME LIKE \PYZsq{}B\PYZpc{}\PYZsq{}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[('Belmont Cragin',),
+ ('Burnside',),
+ ('Brighton Park',),
+ ('Bridgeport',),
+ ('Beverly',)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problem-6}{%
+\subsubsection{Problem 6}\label{problem-6}}
+
+\hypertarget{which-schools-in-community-areas-10-to-15-are-healthy-school-certified}{%
+\subparagraph{Which schools in Community Areas 10 to 15 are healthy
+school
+certified?}\label{which-schools-in-community-areas-10-to-15-are-healthy-school-certified}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{sql} SELECT  NAME\PYZus{}OF\PYZus{}SCHOOL FROM SCHOOLS WHERE HEALTHY\PYZus{}SCHOOL\PYZus{}CERTIFIED=\PYZsq{}Yes\PYZsq{} \PYZbs{}
+    \PY{n}{AND} \PY{p}{(}\PY{n}{COMMUNITY\PYZus{}AREA\PYZus{}NUMBER} \PY{n}{BETWEEN} \PY{l+m+mi}{10} \PY{n}{AND} \PY{l+m+mi}{15}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[('Rufus M Hitch Elementary School',)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problem-7}{%
+\subsubsection{Problem 7}\label{problem-7}}
+
+\hypertarget{what-is-the-average-school-safety-score}{%
+\subparagraph{What is the average school Safety
+Score?}\label{what-is-the-average-school-safety-score}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{sql} SELECT AVG(SAFETY\PYZus{}SCORE) as average\PYZus{}school\PYZus{}safety\PYZus{}score FROM SCHOOLS
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[(Decimal('49.504873'),)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problem-8}{%
+\subsubsection{Problem 8}\label{problem-8}}
+
+\hypertarget{list-the-top-5-community-areas-by-average-college-enrollment-number-of-students}{%
+\subparagraph{List the top 5 Community Areas by average College
+Enrollment {[}number of
+students{]}}\label{list-the-top-5-community-areas-by-average-college-enrollment-number-of-students}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{sql} 
+SELECT COMMUNITY\PYZus{}AREA\PYZus{}NAME, AVG(COLLEGE\PYZus{}ENROLLMENT) as \PYZdq{}AVG\PYZus{}ENROLLMENT\PYZdq{}  
+FROM SCHOOLS
+GROUP BY COMMUNITY\PYZus{}AREA\PYZus{}NAME 
+ORDER BY AVG\PYZus{}ENROLLMENT DESC
+LIMIT 5
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[('ARCHER HEIGHTS', Decimal('2411.500000')),
+ ('MONTCLARE', Decimal('1317.000000')),
+ ('WEST ELSDON', Decimal('1233.333333')),
+ ('BRIGHTON PARK', Decimal('1205.875000')),
+ ('BELMONT CRAGIN', Decimal('1198.833333'))]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problem-9}{%
+\subsubsection{Problem 9}\label{problem-9}}
+
+\hypertarget{use-a-sub-query-to-determine-which-community-area-has-the-least-value-for-school-safety-score}{%
+\subparagraph{Use a sub-query to determine which Community Area has the
+least value for school Safety
+Score?}\label{use-a-sub-query-to-determine-which-community-area-has-the-least-value-for-school-safety-score}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{sql} 
+SELECT COMMUNITY\PYZus{}AREA\PYZus{}NAME FROM SCHOOLS
+WHERE SAFETY\PYZus{}SCORE IN
+(SELECT MIN(SAFETY\PYZus{}SCORE) FROM SCHOOLS)
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[('WASHINGTON PARK',)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{problem-10}{%
+\subsubsection{Problem 10}\label{problem-10}}
+
+\hypertarget{without-using-an-explicit-join-operator-find-the-per-capita-income-of-the-community-area-which-has-a-school-safety-score-of-1.}{%
+\subparagraph{{[}Without using an explicit JOIN operator{]} Find the Per
+Capita Income of the Community Area which has a school Safety Score of
+1.}\label{without-using-an-explicit-join-operator-find-the-per-capita-income-of-the-community-area-which-has-a-school-safety-score-of-1.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{sql}
+SELECT CD.PER\PYZus{}CAPITA\PYZus{}INCOME, CPS.COMMUNITY\PYZus{}AREA\PYZus{}NAME, CPS.SAFETY\PYZus{}SCORE
+FROM CENSUS\PYZus{}DATA AS CD, SCHOOLS AS CPS
+WHERE CPS.COMMUNITY\PYZus{}AREA\PYZus{}NUMBER=CD.COMMUNITY\PYZus{}AREA\PYZus{}NUMBER
+ORDER BY CPS.SAFETY\PYZus{}SCORE 
+LIMIT 1
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ * ibm\_db\_sa://nrx71347:***@dashdb-txn-sbox-yp-lon02-07.services.eu-
+gb.bluemix.net:50000/BLUDB
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[(13785, 'WASHINGTON PARK', 1)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Copyright © 2018
+\href{cognitiveclass.ai?utm_source=bducopyrightlink\&utm_medium=dswb\&utm_campaign=bdu}{cognitiveclass.ai}.
+This notebook and its source code are released under the terms of the
+\href{https://bigdatauniversity.com/mit-license/}{MIT License}.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
